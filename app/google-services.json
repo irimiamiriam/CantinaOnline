@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "441218511577",
+    "firebase_url": "https://cantinaonline-21db2-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "cantinaonline-21db2",
+    "storage_bucket": "cantinaonline-21db2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441218511577:android:a0e1a4930dc4abd47444c8",
+        "android_client_info": {
+          "package_name": "com.example.cantinaonline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOjrXFLs8_1y2lEqt05U6XXn4RPy2VpME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
