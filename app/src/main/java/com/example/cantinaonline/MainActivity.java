@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
                     // Apelează funcția pentru autentificare cu parola introdusă
                     loginWithPasswordAndAdminStatus(enteredPassword);
                     if(adminAutenficat){
-
+                        Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                        startActivity(intent);
                     }
                 }
             }
