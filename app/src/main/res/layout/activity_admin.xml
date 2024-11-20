@@ -7,4 +7,37 @@
     android:layout_height="match_parent"
     tools:context=".AdminActivity">
 
+    <!-- Button for updating paidUntil -->
+    <Button
+        android:id="@+id/addStudentButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="292dp"
+        android:backgroundTint="#2196F3"
+        android:text="Add New Student"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <Button
+        android:id="@+id/payButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:backgroundTint="#4CAF50"
+        android:text="Plata Noua"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addStudentButton"
+        app:layout_constraintWidth_percent="0.8" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.cantinaonline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
                     // Apelează funcția pentru autentificare cu parola introdusă
                     loginWithPasswordAndAdminStatus(enteredPassword);
                     if(adminAutenficat){
-
+                        Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                        startActivity(intent);
                     }
                 }
             }
