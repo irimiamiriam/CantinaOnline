@@ -1,5 +1,6 @@
 package com.example.cantinaonline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    boolean adminAutenficat=false;
+    boolean adminAutenficat=true;
     private EditText passwordInput;
     private Button loginButton;
 
