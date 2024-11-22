@@ -8,42 +8,56 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="24dp">
+        android:padding="24dp"
+        android:background="@drawable/gradient_background">
 
         <!-- Text pentru titlu sau instrucțiuni -->
-        <TextView
-            android:id="@+id/loginTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cantina"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="fill_parent"
+
+            android:layout_height="150dp"
+            android:src="@drawable/logo2" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
 
         <!-- Casetă de introducere a parolei -->
         <EditText
             android:id="@+id/passwordInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Introduceți parola"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@android:color/white"
+            android:hint="Introduceti parola"
             android:inputType="textPassword"
-            android:layout_marginBottom="16dp"/>
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="16sp" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
         <!-- Buton de autentificare -->
         <Button
             android:id="@+id/loginButton"
-            android:layout_width="match_parent"
+            android:layout_width="258dp"
             android:layout_height="wrap_content"
+            android:paddingLeft="24dp"
+            android:paddingTop="12dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="12dp"
             android:text="Autentificare"
-            android:backgroundTint="#4CAF50"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"/>
+            android:textColor="#FF8C00"
+            android:backgroundTint="@color/white"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

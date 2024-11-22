@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddStudentActivity">
+    tools:context=".AddStudentActivity"
+    android:background="@drawable/gradient_background">
 
     <LinearLayout
         android:id="@+id/layout"
@@ -23,8 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:hint="Enter Name"
-            android:inputType="textPersonName" />
+            android:hint="Introdu numele"
+            android:inputType="textPersonName"
+            android:backgroundTint="@color/white"/>
 
         <!-- Password Field -->
         <EditText
@@ -32,7 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:hint="Enter Password"
+            android:hint="Parola"
+            android:backgroundTint="@color/white"
              />
 
         <!-- Days Paid Field -->
@@ -41,7 +44,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:hint="Enter Days Paid"
+            android:hint="Zile platite"
+            android:textColor="@color/white"
+
+            android:backgroundTint="@color/white"
             android:inputType="number" />
 
 
@@ -54,7 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="12dp"
-            android:text="User ID: Not Generated"
+            android:text="Elev ID: Not Generated"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <!-- QR Code Display -->
@@ -71,9 +78,10 @@
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#4CAF50"
-            android:text="Save User"
-            android:textColor="#FFFFFF" />
+            android:backgroundTint="@color/white"
+            android:text="Salveaza elevul"
+            android:textColor="#FF8C00"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
