@@ -15,12 +15,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    boolean adminAutenficat=false;
+    FirebaseFirestore db;
     private EditText passwordInput;
     private Button loginButton;
 
@@ -37,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
 
+        db=FirebaseFirestore.getInstance();
+
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+
+        db.setFirestoreSettings(settings);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,10 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // Apelează funcția pentru autentificare cu parola introdusă
                     loginWithPasswordAndAdminStatus(enteredPassword);
-                    if(adminAutenficat){
-                        Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-                        startActivity(intent);
-                    }
+
                 }
             }
         });
@@ -66,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
                         // Verifică dacă există documente care îndeplinesc criteriile
                         if (!task.getResult().isEmpty()) {
                             Log.d("Login", "Autentificare admin reușită.");
-                            adminAutenficat=true;
+
+                            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                            startActivity(intent);
                         } else {
                             Log.d("Login", "Parola este incorectă sau utilizatorul nu este admin.");
                         }
