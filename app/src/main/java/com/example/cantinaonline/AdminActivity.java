@@ -90,7 +90,7 @@ public class AdminActivity extends AppCompatActivity {
                             // Prompt the admin to enter the new `daysPaid` value
                             showDaysPaidDialog(docId);
                         } else {
-                            Toast.makeText(this, "No matching student ID found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Id neinregistrat", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -98,7 +98,7 @@ public class AdminActivity extends AppCompatActivity {
         // Show a dialog to enter the new `daysPaid` value
         private void showDaysPaidDialog(String docId) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Enter Days Paid");
+            builder.setTitle(" Introduceti numarul de zile");
 
             final EditText input = new EditText(this);
             input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
@@ -109,7 +109,7 @@ public class AdminActivity extends AppCompatActivity {
                 try {
                     daysPaid = Integer.parseInt(input.getText().toString());
                 } catch (NumberFormatException e) {
-                    Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Introduceti un numar valid", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -117,10 +117,10 @@ public class AdminActivity extends AppCompatActivity {
                 db.collection("students").document(docId)
                         .update("daysPaid", daysPaid)
                         .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(this, " Updated successfully!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, " Noua plata cu succes!", Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(this, "Error updating", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Eroare in adaugarea platii", Toast.LENGTH_SHORT).show();
                         });
             });
 
