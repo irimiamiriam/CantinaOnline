@@ -2,6 +2,8 @@ package com.example.cantinaonline;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    boolean adminAutenficat=true;
+    boolean adminAutenficat=false;
     private EditText passwordInput;
     private Button loginButton;
 
@@ -65,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Verifică dacă există documente care îndeplinesc criteriile
                         if (!task.getResult().isEmpty()) {
-                            Log.d("Login", "Autentificare admin reușită.");
                             adminAutenficat=true;
+                            Log.d("Login", "Autentificare admin reușită.");
                         } else {
                             Log.d("Login", "Parola este incorectă sau utilizatorul nu este admin.");
                         }

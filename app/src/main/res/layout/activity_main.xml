@@ -48,6 +48,9 @@
         <!-- Buton de autentificare -->
         <Button
             android:id="@+id/loginButton"
+            android:clickable="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:layout_width="258dp"
             android:layout_height="wrap_content"
             android:paddingLeft="24dp"
