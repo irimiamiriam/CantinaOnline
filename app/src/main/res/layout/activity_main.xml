@@ -41,10 +41,18 @@
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="16sp" />
-
+        <TextView
+            android:id= "@+id/waitText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text = "Asteptati..."
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            />
         <Space
             android:layout_width="match_parent"
             android:layout_height="35dp" />
+
         <!-- Buton de autentificare -->
         <Button
             android:id="@+id/loginButton"

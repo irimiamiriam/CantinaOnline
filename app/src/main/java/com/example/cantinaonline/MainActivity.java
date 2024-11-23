@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
     private EditText passwordInput;
+    private TextView waitText;
     private Button loginButton;
 
     @Override
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         });
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
-
+        waitText= findViewById(R.id.waitText);
         db=FirebaseFirestore.getInstance();
 
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void loginWithPasswordAndAdminStatus(String enteredPassword) {
         // Realizează o interogare pentru a găsi documentele care au atât `password` cât și `isAdmin=true`
+        waitText.setVisibility(View.VISIBLE);
         db.collection("admins")
                 .whereEqualTo("password", enteredPassword)
                 .whereEqualTo("isAdmin", true)
@@ -70,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
                         // Verifică dacă există documente care îndeplinesc criteriile
                         if (!task.getResult().isEmpty()) {
                             Log.d("Login", "Autentificare admin reușită.");
-
+                            waitText.setVisibility(View.INVISIBLE);
                             Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                             startActivity(intent);
-                        } else {
+                        } else { waitText.setVisibility(View.INVISIBLE);
                             Log.d("Login", "Parola este incorectă sau utilizatorul nu este admin.");
                         }
-                    } else {
+                    } else { waitText.setVisibility(View.INVISIBLE);
                         Log.w("Login", "Eroare la accesarea bazei de date.", task.getException());
                     }
                 });
