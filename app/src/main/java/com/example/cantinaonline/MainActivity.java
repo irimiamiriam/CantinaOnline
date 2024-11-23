@@ -2,12 +2,11 @@ package com.example.cantinaonline;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -17,13 +16,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    boolean adminAutenficat=false;
+    FirebaseFirestore db;
     private EditText passwordInput;
+    private TextView waitText;
     private Button loginButton;
 
     @Override
@@ -38,7 +38,14 @@ public class MainActivity extends AppCompatActivity {
         });
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
+        waitText= findViewById(R.id.waitText);
+        db=FirebaseFirestore.getInstance();
 
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+
+        db.setFirestoreSettings(settings);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,16 +56,14 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // Apelează funcția pentru autentificare cu parola introdusă
                     loginWithPasswordAndAdminStatus(enteredPassword);
-                    if(adminAutenficat){
-                        Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-                        startActivity(intent);
-                    }
+
                 }
             }
         });
     }
     public void loginWithPasswordAndAdminStatus(String enteredPassword) {
         // Realizează o interogare pentru a găsi documentele care au atât `password` cât și `isAdmin=true`
+        waitText.setVisibility(View.VISIBLE);
         db.collection("admins")
                 .whereEqualTo("password", enteredPassword)
                 .whereEqualTo("isAdmin", true)
@@ -67,12 +72,14 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Verifică dacă există documente care îndeplinesc criteriile
                         if (!task.getResult().isEmpty()) {
-                            adminAutenficat=true;
                             Log.d("Login", "Autentificare admin reușită.");
-                        } else {
+                            waitText.setVisibility(View.INVISIBLE);
+                            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                            startActivity(intent);
+                        } else { waitText.setVisibility(View.INVISIBLE);
                             Log.d("Login", "Parola este incorectă sau utilizatorul nu este admin.");
                         }
-                    } else {
+                    } else { waitText.setVisibility(View.INVISIBLE);
                         Log.w("Login", "Eroare la accesarea bazei de date.", task.getException());
                     }
                 });

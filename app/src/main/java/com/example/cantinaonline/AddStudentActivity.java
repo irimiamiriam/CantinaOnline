@@ -1,7 +1,19 @@
 package com.example.cantinaonline;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.RectF;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.os.CancellationSignal;
+import android.os.ParcelFileDescriptor;
+import android.print.PageRange;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintDocumentInfo;
+import android.print.PrintManager;
+import android.print.pdf.PrintedPdfDocument;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +34,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -33,8 +47,9 @@ public class AddStudentActivity extends AppCompatActivity {
     private EditText nameField, passwordField, daysPaidField;
     private TextView userIdDisplay;
     private ImageView qrCodeImage;
-    private Button generateUserIdButton, saveButton;
+    private Button generateUserIdButton, saveButton, printButton;
     private String id; // Stores the generated User ID
+    Bitmap qrCodeBitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +66,9 @@ public class AddStudentActivity extends AppCompatActivity {
         userIdDisplay = findViewById(R.id.userIdDisplay);
         qrCodeImage = findViewById(R.id.qrCodeImage);
         saveButton = findViewById(R.id.saveButton);
+        printButton = findViewById(R.id.printButton);
 
+        printButton.setOnClickListener(v->printQRCode());
         generateUniqueUserId(new Callback() {
             @Override
             public void onSuccess(String userId) {
@@ -95,9 +112,10 @@ public class AddStudentActivity extends AppCompatActivity {
     private void generateQRCode(String data) {
         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
         try {
-            Bitmap bitmap = barcodeEncoder.encodeBitmap(data, BarcodeFormat.QR_CODE, 200, 200);
-            qrCodeImage.setImageBitmap(bitmap);
+             qrCodeBitmap = barcodeEncoder.encodeBitmap(data, BarcodeFormat.QR_CODE, 200, 200);
+            qrCodeImage.setImageBitmap(qrCodeBitmap);
             qrCodeImage.setVisibility(View.VISIBLE);
+
         } catch (WriterException e) {
             e.printStackTrace();
             Toast.makeText(this, "Error generating QR Code", Toast.LENGTH_SHORT).show();
@@ -189,6 +207,81 @@ public class AddStudentActivity extends AppCompatActivity {
         daysPaidField.setText("");
         userIdDisplay.setText("User ID: Not Generated");
         qrCodeImage.setVisibility(View.INVISIBLE);
+    }
+    private void printQRCode() {
+        if (qrCodeBitmap == null) {
+            Toast.makeText(this, "QR Code not available for printing.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+
+        printManager.print("QR Code Print", new PrintDocumentAdapter() {
+
+            @Override
+            public void onWrite(PageRange[] pages, ParcelFileDescriptor destination, CancellationSignal cancellationSignal, WriteResultCallback callback) {
+                // Initialize print attributes with default values
+                PrintAttributes printAttributes = new PrintAttributes.Builder()
+                        .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                        .setResolution(new PrintAttributes.Resolution("QR_Code", "QR Code", 300, 300))
+                        .setColorMode(PrintAttributes.COLOR_MODE_COLOR)
+                        .setMinMargins(PrintAttributes.Margins.NO_MARGINS) // Ensure margins are set
+                        .build();
+
+                PrintedPdfDocument pdfDocument = new PrintedPdfDocument(AddStudentActivity.this, printAttributes);
+
+                PdfDocument.Page page = pdfDocument.startPage(0);
+
+                if (cancellationSignal.isCanceled()) {
+                    pdfDocument.close();
+                    callback.onWriteCancelled();
+                    return;
+                }
+
+                Canvas canvas = page.getCanvas();
+                float pageWidth = canvas.getWidth();
+                float pageHeight = canvas.getHeight();
+
+                // Scale and center the bitmap
+                // Set a smaller scale factor to reduce the size of the QR code on the page
+                float desiredSize = 150; // Adjust this value to control the size of the QR code in pixels
+                float scale = Math.min(desiredSize / qrCodeBitmap.getWidth(), desiredSize / qrCodeBitmap.getHeight());
+
+                // Calculate the position to center the QR code on the page
+                float scaledWidth = qrCodeBitmap.getWidth() * scale;
+                float scaledHeight = qrCodeBitmap.getHeight() * scale;
+                float left = (pageWidth - scaledWidth) / 2;
+                float top = (pageHeight - scaledHeight) / 2;
+
+                canvas.drawBitmap(qrCodeBitmap, null, new RectF(left, top, left + scaledWidth, top + scaledHeight), null);
+                pdfDocument.finishPage(page);
+
+                try {
+                    pdfDocument.writeTo(new FileOutputStream(destination.getFileDescriptor()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    callback.onWriteFailed(e.getMessage());
+                } finally {
+                    pdfDocument.close();
+                }
+
+                callback.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
+            }
+
+            @Override
+            public void onLayout(PrintAttributes oldAttributes, PrintAttributes newAttributes, CancellationSignal cancellationSignal, LayoutResultCallback callback, Bundle extras) {
+                if (cancellationSignal.isCanceled()) {
+                    callback.onLayoutCancelled();
+                    return;
+                }
+
+                PrintDocumentInfo info = new PrintDocumentInfo.Builder("QRCode.pdf")
+                        .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
+                        .setPageCount(1)
+                        .build();
+                callback.onLayoutFinished(info, true);
+            }
+        }, null);
     }
 
     interface Callback {
