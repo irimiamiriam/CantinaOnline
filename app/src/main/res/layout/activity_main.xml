@@ -29,7 +29,6 @@
             android:layout_height="25dp" />
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -49,14 +48,15 @@
                 android:textSize="16sp"
                 android:padding="10dp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/togglePasswordButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="46dp"
+                android:layout_height="39dp"
                 android:layout_marginStart="8dp"
-                android:text="👁"
-                android:textSize="14sp"
-                android:backgroundTint="@null" />
+                android:background="@drawable/button_background"
+                android:padding="5dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/eye" />
 
         </LinearLayout>
 
