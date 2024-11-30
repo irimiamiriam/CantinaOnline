@@ -28,19 +28,40 @@
             android:layout_width="match_parent"
             android:layout_height="25dp" />
 
-
-        <!-- Casetă de introducere a parolei -->
-        <EditText
-            android:id="@+id/passwordInput"
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="@android:color/white"
-            android:hint="Introduceti parola"
-            android:inputType="textPassword"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <!-- Casetă de introducere a parolei -->
+            <EditText
+                android:id="@+id/passwordInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Introduceti parola"
+                android:inputType="textPassword"
+                android:backgroundTint="@android:color/white"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="16sp"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/togglePasswordButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:text="👁"
+                android:textSize="14sp"
+                android:backgroundTint="@null" />
+
+        </LinearLayout>
+
+
+
         <TextView
             android:id= "@+id/waitText"
             android:layout_width="match_parent"

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CantinaOnline</string>
+    <string name="title_activity_student">StudentActivity</string>
 </resources>

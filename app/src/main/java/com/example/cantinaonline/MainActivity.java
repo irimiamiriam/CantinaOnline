@@ -2,10 +2,12 @@ package com.example.cantinaonline;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText passwordInput;
     private TextView waitText;
     private Button loginButton;
+    private Button togglePasswordButton;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         waitText= findViewById(R.id.waitText);
         db=FirebaseFirestore.getInstance();
+        togglePasswordButton = findViewById(R.id.togglePasswordButton);
 
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
@@ -56,11 +62,29 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // Apelează funcția pentru autentificare cu parola introdusă
                     loginWithPasswordAndAdminStatus(enteredPassword);
-
+                    loginWithPasswordAndStudentStatus(enteredPassword);
                 }
             }
         });
+        togglePasswordButton.setOnClickListener(v -> {
+            if (isPasswordVisible) {
+                // Hide the password
+                passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                togglePasswordButton.setText("👁"); // Emoji for "Show"
+            } else {
+                // Show the password
+                passwordInput.setInputType(InputType.TYPE_CLASS_TEXT);
+                togglePasswordButton.setText("🙈"); // Emoji for "Hide"
+            }
+
+            // Move the cursor to the end of the text
+            passwordInput.setSelection(passwordInput.getText().length());
+
+            // Toggle the visibility flag
+            isPasswordVisible = !isPasswordVisible;
+        });
     }
+
     public void loginWithPasswordAndAdminStatus(String enteredPassword) {
         // Realizează o interogare pentru a găsi documentele care au atât `password` cât și `isAdmin=true`
         waitText.setVisibility(View.VISIBLE);
@@ -80,6 +104,31 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("Login", "Parola este incorectă sau utilizatorul nu este admin.");
                         }
                     } else { waitText.setVisibility(View.INVISIBLE);
+                        Log.w("Login", "Eroare la accesarea bazei de date.", task.getException());
+                    }
+                });
+    }
+    public void loginWithPasswordAndStudentStatus(String enteredPassword) {
+        // Realizează o interogare pentru a găsi documentele care au `password`
+        waitText.setVisibility(View.VISIBLE);
+        db.collection("students")
+                .whereEqualTo("parola", enteredPassword)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Verifică dacă există documente care îndeplinesc criteriile
+                        if (!task.getResult().isEmpty()) {
+                            Log.d("Login", "Autentificare student reușită.");
+                            waitText.setVisibility(View.INVISIBLE);
+                            Intent intent = new Intent(MainActivity.this, StudentActivity.class);
+                            intent.putExtra("enteredPassword", enteredPassword);
+                            startActivity(intent);
+                        } else {
+                            waitText.setVisibility(View.INVISIBLE);
+                            Log.d("Login", "Parola este incorectă sau utilizatorul nu este student.");
+                        }
+                    } else {
+                        waitText.setVisibility(View.INVISIBLE);
                         Log.w("Login", "Eroare la accesarea bazei de date.", task.getException());
                     }
                 });
