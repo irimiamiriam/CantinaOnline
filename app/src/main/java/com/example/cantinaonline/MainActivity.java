@@ -18,6 +18,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.cantinaonline.ui.theme.AdministratorActivity;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     // Apelează funcția pentru autentificare cu parola introdusă
                     loginWithPasswordAndAdminStatus(enteredPassword);
                     loginWithPasswordAndStudentStatus(enteredPassword);
+                    loginWithPasswordAndAssistantStatus(enteredPassword);
                 }
             }
         });
@@ -89,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     public void loginWithPasswordAndAdminStatus(String enteredPassword) {
         // Realizează o interogare pentru a găsi documentele care au atât `password` cât și `isAdmin=true`
         waitText.setVisibility(View.VISIBLE);
+
         db.collection("admins")
                 .whereEqualTo("password", enteredPassword)
                 .whereEqualTo("isAdmin", true)
@@ -100,6 +104,30 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("Login", "Autentificare admin reușită.");
                             waitText.setVisibility(View.INVISIBLE);
                             Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                            startActivity(intent);
+                        } else { waitText.setVisibility(View.INVISIBLE);
+                            Log.d("Login", "Parola este incorectă sau utilizatorul nu este admin.");
+                        }
+                    } else { waitText.setVisibility(View.INVISIBLE);
+                        Log.w("Login", "Eroare la accesarea bazei de date.", task.getException());
+                    }
+                });
+    }
+
+    public void loginWithPasswordAndAssistantStatus(String enteredPassword) {
+        // Realizează o interogare pentru a găsi documentele care au atât `password` cât și `isAdmin=true`
+        waitText.setVisibility(View.VISIBLE);
+        db.collection("admins")
+                .whereEqualTo("password", enteredPassword.trim())
+                .whereEqualTo("isAdmin", false)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Verifică dacă există documente care îndeplinesc criteriile
+                        if (!task.getResult().isEmpty()) {
+                            Log.d("Login", "Autentificare administrator reușită.");
+                            waitText.setVisibility(View.INVISIBLE);
+                            Intent intent = new Intent(MainActivity.this, AdministratorActivity.class);
                             startActivity(intent);
                         } else { waitText.setVisibility(View.INVISIBLE);
                             Log.d("Login", "Parola este incorectă sau utilizatorul nu este admin.");
