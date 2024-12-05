@@ -207,6 +207,43 @@ public class AddStudentActivity extends AppCompatActivity {
         daysPaidField.setText("");
         userIdDisplay.setText("User ID: Not Generated");
         qrCodeImage.setVisibility(View.INVISIBLE);
+        generateUniquePassword(new PasswordCallback() {
+            @Override
+            public void onSuccess(String password) {
+                Log.d("Generated Password", password);
+
+                // Afișează parola sau folosește-o pentru a crea un nou utilizator
+                passwordField.setText(password);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.e("Error", "Failed to generate unique password", e);
+                Toast.makeText(getApplicationContext(), "Error generating password", Toast.LENGTH_SHORT).show();
+            }
+        });
+        generateUniqueUserId(new Callback() {
+            @Override
+            public void onSuccess(String userId) {
+                if (userId != null) {
+                    // Use the generated unique userId
+                    Log.d("Generated UserId", userId);
+                    // You can now use this userId to save the student to Firestore
+                    generateQRCode(userId);
+                    id=userId;
+                    userIdDisplay.setText("User ID : "+ userId);
+
+                } else {
+                    // Handle error if userId generation failed
+                    Log.e("Error", "Failed to generate unique user ID");
+                }
+            }
+            @Override
+            public void onFailure(Exception e) {
+                // Handle failure
+                Log.e("Error", "Firestore query failed", e);
+            }
+        });
     }
     private void printQRCode() {
         if (qrCodeBitmap == null) {

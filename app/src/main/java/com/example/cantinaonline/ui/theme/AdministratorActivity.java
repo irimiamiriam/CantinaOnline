@@ -54,6 +54,7 @@ public class AdministratorActivity extends AppCompatActivity {
         if (result != null) {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Scan canceled", Toast.LENGTH_LONG).show();
+                finish();
             } else {
                 // Get the scanned QR code content
                 String scannedId = result.getContents();

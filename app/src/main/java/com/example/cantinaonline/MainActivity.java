@@ -1,11 +1,13 @@
 package com.example.cantinaonline;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton;
     private ImageButton togglePasswordButton;
     private boolean isPasswordVisible = false;
+    private SharedPreferences sharedPreferences;
+    private static final String PREFS_NAME = "CantinaPrefs";
+    private static final String KEY_PASSWORD = "savedPassword";
+    private CheckBox checkBox;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,17 @@ public class MainActivity extends AppCompatActivity {
         waitText= findViewById(R.id.waitText);
         db=FirebaseFirestore.getInstance();
         togglePasswordButton = findViewById(R.id.togglePasswordButton);
+        checkBox= findViewById(R.id.savePasswordCheckBox);
+
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+        // Verifică dacă există o parolă salvată
+        String savedPassword = sharedPreferences.getString(KEY_PASSWORD, null);
+        if (savedPassword != null) {
+
+            passwordInput.setText(savedPassword);
+        }
+
 
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
@@ -101,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Verifică dacă există documente care îndeplinesc criteriile
                         if (!task.getResult().isEmpty()) {
+                          if(checkBox.isChecked()){
+                            sharedPreferences.edit()
+                                    .putString(KEY_PASSWORD, enteredPassword)
+                                    .apply();}
                             Log.d("Login", "Autentificare admin reușită.");
                             waitText.setVisibility(View.INVISIBLE);
                             Intent intent = new Intent(MainActivity.this, AdminActivity.class);
@@ -125,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Verifică dacă există documente care îndeplinesc criteriile
                         if (!task.getResult().isEmpty()) {
+                            if(checkBox.isChecked()){
+                                sharedPreferences.edit()
+                                        .putString(KEY_PASSWORD, enteredPassword)
+                                        .apply();}
                             Log.d("Login", "Autentificare administrator reușită.");
                             waitText.setVisibility(View.INVISIBLE);
                             Intent intent = new Intent(MainActivity.this, AdministratorActivity.class);
@@ -147,6 +173,10 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Verifică dacă există documente care îndeplinesc criteriile
                         if (!task.getResult().isEmpty()) {
+                            if(checkBox.isChecked()){
+                                sharedPreferences.edit()
+                                        .putString(KEY_PASSWORD, enteredPassword)
+                                        .apply();}
                             Log.d("Login", "Autentificare student reușită.");
                             waitText.setVisibility(View.INVISIBLE);
                             Intent intent = new Intent(MainActivity.this, StudentActivity.class);

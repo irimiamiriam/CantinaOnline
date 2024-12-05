@@ -66,10 +66,18 @@
             android:id= "@+id/waitText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text = "Asteptati..."
+            android:text = " Asteptati..."
             android:textColor="@color/white"
             android:visibility="invisible"
             />
+        <CheckBox
+            android:id="@+id/savePasswordCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor= "@color/white"
+            android:buttonTint="@color/white"
+            android:text="Reține parola"
+            android:layout_marginTop="8dp" />
         <Space
             android:layout_width="match_parent"
             android:layout_height="35dp" />
