@@ -10,36 +10,70 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"
+     android:gravity ="center_horizontal"
         android:orientation="vertical"
-        android:gravity="center"
         android:padding="24dp"
-        android:background="@drawable/gradient_background">
+      >
 
         <!-- Student Name -->
+
+        <!-- Days Paid -->
+
         <TextView
             android:id="@+id/studentNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="Student Name"
-            android:layout_marginBottom="16dp" />
 
-        <!-- Days Paid -->
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/daysPaidTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:layout_marginBottom="32dp"
             android:text="Zile plătite:"
-            android:layout_marginBottom="32dp" />
+            android:textSize="16sp" />
 
         <!-- QR Code -->
         <ImageView
             android:id="@+id/qrCodeImageView"
             android:layout_width="200dp"
-            android:layout_height="200dp"/>
+            android:layout_height="200dp"
+            android:layout_marginBottom="100dp"/>
+        <Button
+            android:id="@+id/datePickerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/white"
+            android:text="Selectați data restanței"
+            android:textColor="#FF8C00" />
 
+        <!-- Display Selected Date -->
+
+        <TextView
+            android:id="@+id/selectedDateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Data selectată: "
+            android:textSize="16sp" />
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/white"
+            android:text="Adăugați Restanță"
+            android:textColor="#FF8C00" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

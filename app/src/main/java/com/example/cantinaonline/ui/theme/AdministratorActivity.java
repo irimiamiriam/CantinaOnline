@@ -20,6 +20,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AdministratorActivity extends AppCompatActivity {
 
@@ -96,31 +97,41 @@ public class AdministratorActivity extends AppCompatActivity {
 
                             Date today = new Date(); // Data curentă
                             String todayStr = android.text.format.DateFormat.format("yyyy-MM-dd", today).toString();
+                            List<String> restanteDates = (List<String>) document.get("restanteDates");
+                            if (restanteDates != null && restanteDates.contains(today)) {
+                                Toast.makeText(this, "Ziua aceasta este inghetata.", Toast.LENGTH_SHORT).show();
 
-                            if (daysPaid != null && daysPaid > 0) {
-                                if (lastScan == null || !lastScan.equals(todayStr)) {
-                                    // Actualizăm `lastScan` și scădem `daysPaid`
-                                    db.collection("students").document(id)
-                                            .update("lastScan", todayStr, "daysPaid", daysPaid - 1)
-                                            .addOnSuccessListener(aVoid -> {
-                                                Toast.makeText(this, "Scanare reușită! Zile plătite actualizate.", Toast.LENGTH_SHORT).show();
-                                                onPaidUntilButtonClicked();
-                                            })
-                                            .addOnFailureListener(e -> {
-                                                Toast.makeText(this, "Eroare la actualizarea datelor.", Toast.LENGTH_SHORT).show();onPaidUntilButtonClicked();
-                                            });
-                                } else {
-                                    Toast.makeText(this, "Studentul a fost deja scanat astăzi.", Toast.LENGTH_SHORT).show();onPaidUntilButtonClicked();
-                                }
                             } else {
-                                Toast.makeText(this, "Studentul nu mai are zile plătite disponibile.", Toast.LENGTH_SHORT).show();onPaidUntilButtonClicked();
+
+                                if (daysPaid != null && daysPaid > 0) {
+                                    if (lastScan == null || !lastScan.equals(todayStr)) {
+                                        // Actualizăm `lastScan` și scădem `daysPaid`
+                                        db.collection("students").document(id)
+                                                .update("lastScan", todayStr, "daysPaid", daysPaid - 1)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    Toast.makeText(this, "Scanare reușită! Zile plătite actualizate.", Toast.LENGTH_SHORT).show();
+                                                    onPaidUntilButtonClicked();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Toast.makeText(this, "Eroare la actualizarea datelor.", Toast.LENGTH_SHORT).show();
+                                                    onPaidUntilButtonClicked();
+                                                });
+                                    } else {
+                                        Toast.makeText(this, "Studentul a fost deja scanat astăzi.", Toast.LENGTH_SHORT).show();
+                                        onPaidUntilButtonClicked();
+                                    }
+                                } else {
+                                    Toast.makeText(this, "Studentul nu mai are zile plătite disponibile.", Toast.LENGTH_SHORT).show();
+                                    onPaidUntilButtonClicked();
+                                }}
+                            } else {
+                                Toast.makeText(this, "Documentul studentului nu există.", Toast.LENGTH_SHORT).show();onPaidUntilButtonClicked();
                             }
                         } else {
-                            Toast.makeText(this, "Documentul studentului nu există.", Toast.LENGTH_SHORT).show();onPaidUntilButtonClicked();
+                            Toast.makeText(this, "Eroare la accesarea bazei de date.", Toast.LENGTH_SHORT).show();onPaidUntilButtonClicked();
                         }
-                    } else {
-                        Toast.makeText(this, "Eroare la accesarea bazei de date.", Toast.LENGTH_SHORT).show();onPaidUntilButtonClicked();
-                    }
+
+
                 });
     }
 
