@@ -10,14 +10,47 @@
 
 
     <!-- Button for updating paidUntil -->
+
+    <Button
+        android:id="@+id/addRestante"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="208dp"
+        android:backgroundTint="@color/white"
+        android:text="Adaugare restanta"
+        android:textColor="#FF8C00"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addStudentButton"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <Button
+        android:id="@+id/payButtonBySearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="124dp"
+        android:backgroundTint="@color/white"
+        android:text="Plata noua prin cautare"
+        android:textColor="#FF8C00"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addStudentButton"
+        app:layout_constraintWidth_percent="0.8" />
+
     <Button
         android:id="@+id/addStudentButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="292dp"
-        android:textColor="#FF8C00"
+        android:layout_marginTop="240dp"
         android:backgroundTint="@color/white"
         android:text="Student nou"
+        android:textColor="#FF8C00"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible"
@@ -30,18 +63,16 @@
         android:id="@+id/payButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:textColor="#FF8C00"
+        android:layout_marginTop="36dp"
         android:backgroundTint="@color/white"
+        android:text="Plata noua prin scan"
+        android:textColor="#FF8C00"
         android:textSize="18sp"
-        android:text="Plata noua"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addStudentButton"
         app:layout_constraintWidth_percent="0.8" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

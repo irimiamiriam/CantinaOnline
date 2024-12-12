@@ -38,13 +38,20 @@ public class AdminActivity extends AppCompatActivity {
             return insets;
         });
 
-
+    Button restantaNoua = findViewById(R.id.addRestante);
         Button addStudent = findViewById(R.id.addStudentButton);
         paid = findViewById(R.id.payButton);
         addStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminActivity.this, AddStudentActivity.class);
+                startActivity(intent);
+            }
+        });
+        restantaNoua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, AddRestanta.class);
                 startActivity(intent);
             }
         });
