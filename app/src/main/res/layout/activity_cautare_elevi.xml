@@ -45,15 +45,19 @@
             android:background="@android:color/white"
             android:padding="8dp"
             android:scrollbars="vertical" />
+
         <EditText
             android:id="@+id/daysInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Introduceți numărul de zile"
+            android:digits="0123456789"
             android:inputType="number"
-            android:padding="8dp"
+            android:imeOptions="actionDone"
+            android:textSize="20dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
+
         <Button
             android:id="@+id/payButton"
             android:layout_width="match_parent"

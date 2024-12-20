@@ -40,11 +40,20 @@ public class AdminActivity extends AppCompatActivity {
 
     Button restantaNoua = findViewById(R.id.addRestante);
         Button addStudent = findViewById(R.id.addStudentButton);
+        Button cautareElev = findViewById(R.id.payButtonBySearch);
+
         paid = findViewById(R.id.payButton);
         addStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminActivity.this, AddStudentActivity.class);
+                startActivity(intent);
+            }
+        });
+        cautareElev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, CautareElevi.class);
                 startActivity(intent);
             }
         });
