@@ -1,5 +1,6 @@
 package com.example.cantinaonline.ui.theme;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -97,10 +98,10 @@ public class AdministratorActivity extends AppCompatActivity {
 
                             Date today = new Date(); // Data curentă
                             String todayStr = android.text.format.DateFormat.format("yyyy-MM-dd", today).toString();
-                            List<String> restanteDates = (List<String>) document.get("restanteDates");
-                            if (restanteDates != null && restanteDates.contains(today)) {
+                            List<String> restanteDates = (List<String>) document.get("dateRestante");
+                            if (restanteDates != null && restanteDates.contains(todayStr)) {
                                 Toast.makeText(this, "Ziua aceasta este inghetata.", Toast.LENGTH_SHORT).show();
-
+                                onPaidUntilButtonClicked();
                             } else {
 
                                 if (daysPaid != null && daysPaid > 0) {
