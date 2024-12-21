@@ -37,7 +37,6 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
         // Bind student data
         holder.nameTextView.setText(student.getName());
-        holder.remainingDaysTextView.setText("Zile rămase: " + student.getDaysPaid());
 
         // Handle checkbox selection
         holder.selectCheckBox.setOnCheckedChangeListener(null); // Prevent unintended behavior
@@ -72,7 +71,6 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         public StudentViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
-            remainingDaysTextView = itemView.findViewById(R.id.daysPaidTextView);
             selectCheckBox = itemView.findViewById(R.id.checkBox);
         }
     }

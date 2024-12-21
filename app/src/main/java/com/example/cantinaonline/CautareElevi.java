@@ -11,8 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +42,13 @@ public class CautareElevi extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cautare_elevi);
 
+        EdgeToEdge.enable(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
         db = FirebaseFirestore.getInstance();
 
         studentsRecyclerView = findViewById(R.id.studentsRecyclerView);
@@ -49,12 +60,8 @@ public class CautareElevi extends AppCompatActivity {
         studentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         studentsRecyclerView.setAdapter(studentAdapter);
 
-        daysInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               daysInput.requestFocus();
-            }
-        });
+
+
 
         // Load students from the database
         loadStudents();

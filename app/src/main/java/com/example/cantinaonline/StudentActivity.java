@@ -176,12 +176,12 @@ public class StudentActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 // Extract data from document
                                 String name = document.getString("name");
-                                Long daysPaid = document.getLong("daysPaid");
+
                                 studentId = document.getString("studentId");
 
                                 // Display data
                                 studentNameTextView.setText(name);
-                                daysPaidTextView.setText("Zile plătite: " + daysPaid);
+
 
                                 // Generate QR Code
                                 generateQRCode(studentId);

@@ -6,26 +6,30 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CautareElevi">
+    tools:context=".CautareElevi"
+    android:background="@drawable/gradient_background"
+>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.8"
-        android:background="@drawable/gradient_background">
+        >
 
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
             android:text="Selectează elevii"
             android:textSize="20sp"
             android:textStyle="bold" />
         <EditText
+            android:layout_marginLeft="8dp"
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +45,7 @@
             android:id="@+id/studentsRecyclerView"
             android:layout_width="386dp"
             android:layout_height="433dp"
-
+            android:layout_marginLeft="8dp"
             android:background="@android:color/white"
             android:padding="8dp"
             android:scrollbars="vertical" />
@@ -51,14 +55,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Introduceți numărul de zile"
-            android:digits="0123456789"
-            android:inputType="number"
+            android:inputType="text"
+            android:layout_marginLeft="8dp"
             android:imeOptions="actionDone"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
 
         <Button
+            android:layout_marginLeft="8dp"
             android:id="@+id/payButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
