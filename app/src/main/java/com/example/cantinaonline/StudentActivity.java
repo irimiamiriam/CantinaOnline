@@ -181,7 +181,7 @@ public class StudentActivity extends AppCompatActivity {
 
                                 // Display data
                                 studentNameTextView.setText(name);
-
+                                daysPaidTextView.setText("Zile platite: "+ document.get("daysPaid",Integer.class).toString());
 
                                 // Generate QR Code
                                 generateQRCode(studentId);
