@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cantinaonline.R;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -79,7 +83,16 @@ public class CautareElevi extends AppCompatActivity {
         });
 
         // Add payment logic
-        payButton.setOnClickListener(v -> addPaymentsToSelectedStudents());
+        payButton.setOnClickListener(v ->  {
+
+            int daysPaid = Integer.parseInt(daysInput.getText().toString());
+
+            if (!selectedStudents.isEmpty() && daysPaid > 0) {
+                showPaymentSummaryDialog(selectedStudents, daysPaid);
+            } else {
+                Toast.makeText(this, "Selectează elevi și introduceți numărul de zile!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadStudents() {
@@ -92,7 +105,8 @@ public class CautareElevi extends AppCompatActivity {
                             String id = document.getId();
                             String name = document.getString("name");
                             Long daysPaid = document.getLong("daysPaid");
-                            studentsList.add(new Student(id, name, daysPaid != null ? daysPaid : 0));
+                            Long restante = document.getLong("restante");
+                            studentsList.add(new Student(id, name, daysPaid != null ? daysPaid : 0, restante != null ? restante : 0));
                         }
                         studentAdapter.notifyDataSetChanged();
                     }
@@ -128,4 +142,50 @@ public class CautareElevi extends AppCompatActivity {
                     });
         }
     }
+    private void showPaymentSummaryDialog(List<Student> selectedStudents, int daysPaid) {
+        // Inflate the dialog layout
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_payment_summary, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+
+        RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.dialogRecyclerView);
+        TextView totalPaymentTextView = dialogView.findViewById(R.id.totalPaymentTextView);
+        Button confirmButton = dialogView.findViewById(R.id.confirmButton);
+
+        // Adapter for dialog to display individual payments
+        PaymentSummaryAdapter adapter = new PaymentSummaryAdapter(selectedStudents, daysPaid);
+        dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dialogRecyclerView.setAdapter(adapter);
+
+        // Calculate total payment
+        Long totalPayment = 0L;
+        for (Student student : selectedStudents) {
+            Long restante = student.getRestante(); // Fetch from model
+            totalPayment += 18 * (daysPaid - restante);
+        }
+        totalPaymentTextView.setText("Total Plata: " + totalPayment + " Lei");
+
+        // Show dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Handle OK button
+        confirmButton.setOnClickListener(v -> {
+            // Update database for all selected students
+            for (Student student : selectedStudents) {
+                Long restante = student.getRestante();
+
+
+                // Add payment to Firestore
+                db.collection("students").document(student.getId())
+                        .update("daysPaid", daysPaid, "restante", 0, "dateRestante", null)
+                        .addOnSuccessListener(aVoid -> Log.d("Payment", "Updated successfully for " + student.getName()))
+                        .addOnFailureListener(e -> Log.w("Payment", "Error updating payment", e));
+            }
+
+            Toast.makeText(this, "Plata a fost adaugată!", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+    }
+
 }

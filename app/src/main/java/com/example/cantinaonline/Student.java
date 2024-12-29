@@ -3,14 +3,14 @@ package com.example.cantinaonline;
 public class Student {
     private String id;
     private String name;
-    private int restante; // Number of overdue days
+    private Long restante; // Number of overdue days
     private Long daysPaid;
 
     public Student() {
         // Default constructor for Firestore
     }
 
-    public Student(String id, String name, int restante, Long daysPaid) {
+    public Student(String id, String name,  Long daysPaid, Long restante) {
         this.id = id;
         this.name = name;
         this.restante = restante;
@@ -39,11 +39,11 @@ public class Student {
         this.name = name;
     }
 
-    public int getRestante() {
+    public Long getRestante() {
         return restante;
     }
 
-    public void setRestante(int restante) {
+    public void setRestante(Long restante) {
         this.restante = restante;
     }
 

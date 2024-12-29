@@ -44,7 +44,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/studentsRecyclerView"
 
-            android:layout_width="386dp"
+            android:layout_width="362dp"
             android:layout_height="433dp"
             android:layout_marginLeft="8dp"
             android:background="@android:color/white"
